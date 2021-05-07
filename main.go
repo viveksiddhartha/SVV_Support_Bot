@@ -2,38 +2,29 @@ package main
 
 import (
 	"log"
-	"os"
+	"time"
 
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
 func main() {
-	var (
-		port      = os.Getenv("PORT")       // sets automatically
-		publicURL = os.Getenv("PUBLIC_URL") // you must add it to your config vars
-		token     = os.Getenv("TOKEN")      // you must add it to your config vars
-	)
+	b, err := tb.NewBot(tb.Settings{
+		// You can also set custom API URL.
+		// If field is empty it equals to "https://api.telegram.org".
+		URL: "",
 
-	webhook := &tb.Webhook{
-		Listen:   ":" + port,
-		Endpoint: &tb.WebhookEndpoint{PublicURL: publicURL},
-	}
+		Token:  "1813786957:AAGj09IMnW05i-5Q3Wik3jsEkdOvbd3Ziag",
+		Poller: &tb.LongPoller{Timeout: 10 * time.Second},
+	})
 
-	pref := tb.Settings{
-		Token:  token,
-		Poller: webhook,
-	}
-
-	b, err := tb.NewBot(pref)
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
 
-	b.Handle("/Hi", func(m *tb.Message) {
-		b.Send(m.Sender, "Hi!!!")
+	b.Handle("/hello", func(m *tb.Message) {
+		b.Send(m.Sender, "Hello World!")
 	})
 
-	b.Handle("/hello", func(m *tb.Message) {
-		b.Send(m.Sender, "You entered "+m.Text)
-	})
+	b.Start()
 }
