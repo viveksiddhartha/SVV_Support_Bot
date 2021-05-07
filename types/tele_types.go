@@ -4,7 +4,7 @@ import "os"
 
 const telegramAPIBaseURL string = "https://api.telegram.org/bot"
 const telegramAPISendMessage string = "/sendMessage"
-const telegramTokenEnv string = "TELEGRAM_BOT_TOKEN"
+const telegramTokenEnv string = "1813786957:AAGj09IMnW05i-5Q3Wik3jsEkdOvbd3Ziag"
 const wordnikToken string = "WORDNIK_TOKEN"
 
 // TelegramAPI is the api to which we should send the message to
