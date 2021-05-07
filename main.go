@@ -2,35 +2,29 @@ package main
 
 import (
 	"log"
+	"time"
 
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tb "gopkg.in/tucnak/telebot.v2"
 )
 
 func main() {
-	bot, err := tgbotapi.NewBotAPI("1813786957:AAGj09IMnW05i-5Q3Wik3jsEkdOvbd3Ziag")
+	b, err := tb.NewBot(tb.Settings{
+		// You can also set custom API URL.
+		// If field is empty it equals to "https://api.telegram.org".
+		URL: "",
+
+		Token:  "1813786957:AAGj09IMnW05i-5Q3Wik3jsEkdOvbd3Ziag",
+		Poller: &tb.LongPoller{Timeout: 10 * time.Second},
+	})
+
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
+		return
 	}
 
-	bot.Debug = true
+	b.Handle("/hello", func(m *tb.Message) {
+		b.Send(m.Sender, "Hello World!")
+	})
 
-	log.Printf("Authorized on account %s", bot.Self.UserName)
-
-	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 60
-
-	updates, err := bot.GetUpdatesChan(u)
-
-	for update := range updates {
-		if update.Message == nil { // ignore any non-Message Updates
-			continue
-		}
-
-		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
-		msg.ReplyToMessageID = update.Message.MessageID
-
-		bot.Send(msg)
-	}
+	b.Start()
 }
