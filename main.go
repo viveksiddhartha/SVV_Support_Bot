@@ -115,7 +115,7 @@ func handler(res http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("got error %s from telegram, response body is %s", err.Error(), resp)
 	} else {
-		log.Printf("punchline %s successfully distributed to chat id %d", output, update.Message.Chat.ID)
+		log.Printf("punchline %s successfully distributed tooooo chat id %d", output, update.Message.Chat.ID)
 	}
 }
 
