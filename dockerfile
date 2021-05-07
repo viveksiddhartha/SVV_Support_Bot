@@ -1,6 +1,6 @@
 FROM golang:alpine as builder
 
-LABEL maintainer="Hemant Joshi"
+LABEL maintainer="Vivek Siddhartha"
 
 RUN apk update && apk add --no-cache git
 
@@ -27,6 +27,6 @@ WORKDIR /root/
 # Copy the Pre-built binary file from the previous stage.
 COPY --from=builder /app/main .
 
-
+EXPOSE 4000
 
 CMD [ "./main" ]
